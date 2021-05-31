@@ -100,4 +100,7 @@
 
     <!-- Name of the call strength status bar icon. -->
     <string name="status_bar_call_strength">Call strength</string>
+
+    <!-- Sleep Mode -->
+    <string name="quick_settings_sleep_mode_label">Sleep Mode</string>
 </resources>

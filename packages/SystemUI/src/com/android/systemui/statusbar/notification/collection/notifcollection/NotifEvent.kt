@@ -92,6 +92,7 @@ data class CleanUpEntryEvent(
 data class RankingUpdatedEvent(
     val rankingMap: RankingMap
 ) : NotifEvent() {
+    @Suppress("DEPRECATION")
     override fun dispatchToListener(listener: NotifCollectionListener) {
         listener.onRankingUpdate(rankingMap)
     }

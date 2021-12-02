@@ -23,6 +23,7 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.widget.FrameLayout
 import com.android.internal.annotations.GuardedBy
 import com.android.systemui.animation.Interpolators
@@ -67,7 +68,8 @@ class PrivacyDotViewController @Inject constructor(
     private val stateController: StatusBarStateController,
     private val configurationController: ConfigurationController,
     private val contentInsetsProvider: StatusBarContentInsetsProvider,
-    private val animationScheduler: SystemStatusAnimationScheduler
+    private val animationScheduler: SystemStatusAnimationScheduler,
+    private val windowManager: WindowManager,
 ) {
     private lateinit var tl: View
     private lateinit var tr: View
@@ -231,18 +233,17 @@ class PrivacyDotViewController @Inject constructor(
         // StatusBarContentInsetsProvider can tell us the location of the privacy indicator dot
         // in every rotation. The only thing we need to check is rtl
         val rtl = state.layoutRtl
-        val size = Point()
-        tl.context.display.getRealSize(size)
+        val bounds = windowManager.currentWindowMetrics.bounds
         val currentRotation = RotationUtils.getExactRotation(tl.context)
 
         val displayWidth: Int
         val displayHeight: Int
         if (currentRotation == ROTATION_LANDSCAPE || currentRotation == ROTATION_SEASCAPE) {
-            displayWidth = size.y
-            displayHeight = size.x
+            displayWidth = bounds.height()
+            displayHeight = bounds.width()
         } else {
-            displayWidth = size.x
-            displayHeight = size.y
+            displayWidth = bounds.width()
+            displayHeight = bounds.height()
         }
 
         var rot = activeRotationForCorner(tl, rtl)
@@ -499,12 +500,12 @@ class PrivacyDotViewController @Inject constructor(
     private val systemStatusAnimationCallback: SystemStatusAnimationCallback =
             object : SystemStatusAnimationCallback {
         override fun onSystemStatusAnimationTransitionToPersistentDot(
-            contentDescr: String?
+            contentDescription: String?
         ): Animator? {
             synchronized(lock) {
                 nextViewState = nextViewState.copy(
                         systemPrivacyEventIsActive = true,
-                        contentDescription = contentDescr)
+                        contentDescription = contentDescription)
             }
 
             return null

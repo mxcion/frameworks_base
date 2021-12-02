@@ -474,7 +474,7 @@ class LockscreenShadeTransitionController @Inject constructor(
             // Indicate that the group expansion is changing at this time -- this way the group
             // and children backgrounds / divider animations will look correct.
             entry.setGroupExpansionChanging(true)
-            userId = entry.sbn.userId
+            userId = entry.sbn.user.identifier
         }
         var fullShadeNeedsBouncer = (!lockScreenUserManager.userAllowsPrivateNotificationsInPublic(
                 lockScreenUserManager.getCurrentUserId()) ||
@@ -741,7 +741,6 @@ class DragDownHelper(
         if (!isDraggingDown) {
             return false
         }
-        val x = event.x
         val y = event.y
         when (event.actionMasked) {
             MotionEvent.ACTION_MOVE -> {

@@ -76,7 +76,7 @@ public enum ScrimState {
             }
             mAnimateChange = false;
             mFrontTint = Color.BLACK;
-            mBehindTint = Color.BLACK;
+            mBehindTint = Color.TRANSPARENT;
             mNotifTint = mClipQsScrim ? Color.BLACK : Color.TRANSPARENT;
 
             mFrontAlpha = 0;
